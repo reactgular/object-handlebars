@@ -28,7 +28,7 @@ directly modify the *context object*, but instead returns a *deep clone*.
 
 You can install the library with `npm install @reactgular/object-handlebars` and import the main function.
 
-```
+```typescript
 // using TypeScript
 import {objectHandlebars} from '@reactgular/object-handlebars';
 
