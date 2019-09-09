@@ -21,6 +21,14 @@ const data = {
 console.log(objectHandlebars(data)); // prints {first: "John", last: "Smith", fullName: "John Smith"}
 ```
 
+## Installation
+
+To get started, install the package from npm.
+
+```bash
+npm install --save @reactgular/object-handlebars
+```
+
 ## Usage
 
 ObjectHandlerbars is a function that takes the *context object*, *filters* and *recursion depth* as parameters. It does not
@@ -112,20 +120,4 @@ console.log(objectHandlebars(data));
 //    values: ["John", "Smith"],
 //    objects: [{fullName: "John Smith"}]
 // }
-```
-
-## Installation
-
-To get started, install the package from npm
-
-```bash
-npm install --save @reactgular/object-handlebars
-```
-
-## Install dependencies
-
-This library uses the [dot-prop](https://www.npmjs.com/package/dot-prop) library to resolve dot expressions.
-
-```bash
-npm install --save dot-prop
 ```
