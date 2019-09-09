@@ -1,9 +1,9 @@
 import * as dotProp from 'dot-prop';
-import {HandlebarFilters} from '../../index';
+import {Filters} from '../../index';
 import {FilterNotFoundError} from '../errors/filter-not-found-error';
 import {HANDLEBARS_REGEX} from '../handlebars-regex/handlebars-regex';
 
-export function handlebars(str: string, context: any, handlebarFilters: HandlebarFilters = {}): string {
+export function handlebars(str: string, context: any, handlebarFilters: Filters = {}): string {
     return str.replace(HANDLEBARS_REGEX, (bars: string, exp: string): string => {
         const [dot, ...filters] = exp.split('|');
         let value = dotProp.get(context, dot.trim(), undefined);

@@ -1,6 +1,6 @@
 {
     "name": "@reactgular/object-handlebars",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Minimal templating with {{handlebars}} in a JavaScript object.",
     "author": "reactgular.com",
     "homepage": "https://github.com/reactgular/object-handlebars.git",

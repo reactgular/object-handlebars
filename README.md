@@ -10,7 +10,7 @@ expressions relative to the current object.
 For example;
 
 ```typescript
-import {objectHandlebars} from '@reactgular/object-handlebars';
+import {render} from '@reactgular/object-handlebars';
 
 const data = {
   first: 'John',
@@ -18,7 +18,7 @@ const data = {
   fullName: '{{first}} {{last}}'
 };
 
-console.log(objectHandlebars(data)); // prints {first: "John", last: "Smith", fullName: "John Smith"}
+console.log(render(data)); // prints {first: "John", last: "Smith", fullName: "John Smith"}
 ```
 
 ## Installation
@@ -38,10 +38,11 @@ You can install the library with `npm install @reactgular/object-handlebars` and
 
 ```typescript
 // using TypeScript
-import {objectHandlebars} from '@reactgular/object-handlebars';
+import {render} from '@reactgular/object-handlebars';
 
 // using NodeJS
 const objectHandlebars = require('@reactgular/object-handlebars');
+objectHandlebars.render();
 ```
 
 ## Function Signature
@@ -51,11 +52,11 @@ properties rendered with handlebars.
 
 ```typescript
 // function definition for ObjectHandlebars
-export type objectHandlebars = <TType>(obj: TType, filters: HandlebarFilters = {}, maxDepth: number = 100) => TType;
+export type render = <TType>(obj: TType, filters: Filters = {}, maxDepth: number = 100) => TType;
 
 // filter functions
-export type HandlebarFilter = (s: string) => string;
-export interface HandlebarFilters { [key: string]: HandlebarFilter;}
+export type Filter = (s: string) => string;
+export interface Filters { [key: string]: Filter;}
 ```
 
 ### Basic Usage
@@ -63,9 +64,9 @@ export interface HandlebarFilters { [key: string]: HandlebarFilter;}
 Object properties that are *strings* will be rendered as basic handlebar templates.
 
 ```typescript
-import {objectHandlebars} from '@reactgular/object-handlebars';
+import {render} from '@reactgular/object-handlebars';
 
-console.log(objectHandlebars({a: "one", b: "{{a}}"})); // prints {a: "one", b: "one"}
+console.log(render({a: "one", b: "{{a}}"})); // prints {a: "one", b: "one"}
 ```
 
 ### Filters
@@ -74,10 +75,10 @@ You can pass a map of filter functions. A filter function takes a single argumen
 can be chained together in a handlebars expression like this `{{property|filterA|filterB|filterC}}`.
 
 ```typescript
-import {objectHandlebars} from '@reactgular/object-handlebars';
+import {render} from '@reactgular/object-handlebars';
 
 const upper = (s) => s.toUppercase();
-console.log(objectHandlebars({a: "one", b: "{{a|upper}}"}, {upper})); // prints {a: "one", b: "ONE"}
+console.log(render({a: "one", b: "{{a|upper}}"}, {upper})); // prints {a: "one", b: "ONE"}
 ```
 
 ### Dot notation
@@ -85,7 +86,7 @@ console.log(objectHandlebars({a: "one", b: "{{a|upper}}"}, {upper})); // prints 
 Handlebar expressions can use dot notation to reference nested values, but the path is always from the top of the context object.
 
 ```typescript
-import {objectHandlebars} from '@reactgular/object-handlebars';
+import {render} from '@reactgular/object-handlebars';
 
 const data = {
     person: {
@@ -95,7 +96,7 @@ const data = {
     fullName: "{{person.first}} {{person.last}}"
 };
 
-console.log(objectHandlebars(data)); // prints {person: {first: "John", last: "Smith"}, fullName: "John Smith"}
+console.log(render(data)); // prints {person: {first: "John", last: "Smith"}, fullName: "John Smith"}
 ```
 
 ### Array of objects
@@ -103,7 +104,7 @@ console.log(objectHandlebars(data)); // prints {person: {first: "John", last: "S
 ObjectHandlebars will render any nested objects found in arrays.
 
 ```typescript
-import {objectHandlebars} from '@reactgular/object-handlebars';
+import {render} from '@reactgular/object-handlebars';
 
 const data = {
     person: {first: "John", last: "Smith"},
@@ -113,7 +114,7 @@ const data = {
     ]
 };
 
-console.log(objectHandlebars(data)); 
+console.log(render(data)); 
 // prints 
 // {
 //    person: {first: "John", last: "Smith"}

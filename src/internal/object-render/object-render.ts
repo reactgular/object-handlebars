@@ -1,6 +1,6 @@
 import {MaxDepthError} from '../errors/max-depth-error';
 import {handlebars} from '../handlebars/handlebars';
-import {HandlebarFilters} from '../../index';
+import {Filters} from '../../index';
 
 function render(context: any, str: string, maxDepth: number, depth: number): string {
     const next = handlebars(str, context, {});
@@ -13,7 +13,7 @@ function render(context: any, str: string, maxDepth: number, depth: number): str
     return next;
 }
 
-export function objectRender(context: any, value: any, filters: HandlebarFilters = {}, maxDepth: number = 100): any {
+export function objectRender(context: any, value: any, filters: Filters = {}, maxDepth: number = 100): any {
     if (typeof value === 'string') {
         return render(context, value, maxDepth, 0);
     } else if (value instanceof Array) {

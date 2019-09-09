@@ -1,11 +1,11 @@
 import {objectRender} from './internal/object-render/object-render';
 
-export type HandlebarFilter = (s: string) => string;
+export type Filter = (s: string) => string;
 
-export interface HandlebarFilters {
-    [key: string]: HandlebarFilter;
+export interface Filters {
+    [key: string]: Filter;
 }
 
-export function objectHandlebars<TType>(obj: TType, filters: HandlebarFilters = {}, maxDepth: number = 100): TType {
+export function render<TType>(obj: TType, filters: Filters = {}, maxDepth: number = 100): TType {
     return objectRender(obj, obj, filters, maxDepth);
 }
