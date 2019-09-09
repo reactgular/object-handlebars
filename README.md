@@ -21,58 +21,97 @@ const data = {
 console.log(objectHandlebars(data)); // prints {first: "John", last: "Smith", fullName: "John Smith"}
 ```
 
-## Where to use ObjectHandlebars?
+## Usage
 
-ObjectHandlebars was created to make the reading of JSON configuration objects less *static* in nature. So that a developer can
-reference properties dynamically and not have to update multiple locations in a JSON object.
+ObjectHandlerbars is a function that takes the *context object*, *filters* and *recursion depth* as parameters. It does not
+directly modify the *context object*, but instead returns a *deep clone*.
 
-For example;
+You can install the library with `npm install @reactgular/object-handlebars` and import the main function.
 
-```json
-{
-  "user": "reactgular",
-  "repository": "object-handlebars",
-  "url": "https://github.com/{{user}}/{{repository}}.git",
-  "issues": "https://github.com/{{user}}/{{repository}}/issues"
-}
+```
+// using TypeScript
+import {objectHandlebars} from '@reactgular/object-handlebars';
+
+// using NodeJS
+const objectHandlebars = require('@reactgular/object-handlebars');
 ```
 
-The above is a *self-contained* object that can be rendered with ObjectHandlebars. It can be fetched from a server or stored on disk as `config.json`.
+## Function Signature
 
-### Supports dot notation
+You can call the ObjectHandlebars function with a single object parameter, and it returns a deep clone of that object with all string
+properties rendered with handlebars.
 
-ObjectHandlebars supports object path references using dot notation.
+```typescript
+// function definition for ObjectHandlebars
+export type objectHandlebars = <TType>(obj: TType, filters: HandlebarFilters = {}, maxDepth: number = 100) => TType;
 
-For example;
-
-```json
-{
-  "person": {
-    "first": "John",
-    "last": "Smith"
-  },
-  "fullName": "{{person.first}} {{person.last}}"
-}
+// filter functions
+export type HandlebarFilter = (s: string) => string;
+export interface HandlebarFilters { [key: string]: HandlebarFilter;}
 ```
 
-### Support for filters
+### Basic Usage
 
-ObjectHandlebars supports filter functions that can be used inside handlebars with the `|` character to modify values.
+Object properties that are *strings* will be rendered as basic handlebar templates.
 
-For example;
+```typescript
+import {objectHandlebars} from '@reactgular/object-handlebars';
+
+console.log(objectHandlebars({a: "one", b: "{{a}}"})); // prints {a: "one", b: "one"}
+```
+
+### Filters
+
+You can pass a map of filter functions. A filter function takes a single argument of a string and returns a string. Filters
+can be chained together in a handlebars expression like this `{{property|filterA|filterB|filterC}}`.
+
+```typescript
+import {objectHandlebars} from '@reactgular/object-handlebars';
+
+const upper = (s) => s.toUppercase();
+console.log(objectHandlebars({a: "one", b: "{{a|upper}}"}, {upper})); // prints {a: "one", b: "ONE"}
+```
+
+### Dot notation
+
+Handlebar expressions can use dot notation to reference nested values, but the path is always from the top of the context object.
 
 ```typescript
 import {objectHandlebars} from '@reactgular/object-handlebars';
 
 const data = {
-  first: 'John',
-  last: 'Smith',
-  fullName: '{{first|upper}} {{last|upper}}'
+    person: {
+        first: "John",
+        last: "Smith"
+    },
+    fullName: "{{person.first}} {{person.last}}"
 };
 
-const upper = (s) => s.toUppercase();
+console.log(objectHandlebars(data)); // prints {person: {first: "John", last: "Smith"}, fullName: "John Smith"}
+```
 
-console.log(objectHandlebars(data, {upper})); // prints {first: "John", last: "Smith", fullName: "JOHN SMITH"}
+### Array of objects
+
+ObjectHandlebars will render any nested objects found in arrays.
+
+```typescript
+import {objectHandlebars} from '@reactgular/object-handlebars';
+
+const data = {
+    person: {first: "John", last: "Smith"},
+    values: ["{{person.first}}", "{{person.last}}"],
+    objects: [
+        {fullName: "{{person.first}} {{person.last}}"}
+    ]
+};
+
+console.log(objectHandlebars(data)); 
+// prints 
+// {
+//    person: {first: "John", last: "Smith"}
+//    values: ["John", "Smith"],
+//    objects: [{fullName: "John Smith"}]
+// }
 ```
 
 ## Installation

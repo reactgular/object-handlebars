@@ -20,8 +20,8 @@ export function objectRender(context: any, value: any, filters: HandlebarFilters
         return value.map(v => objectRender(context, v, filters, maxDepth));
     } else if (typeof value === 'object') {
         return Object.entries(value)
-            .map(([key, value]) => [key, objectRender(context, value, filters, maxDepth)])
-            .reduce((acc, [key, value]) => (acc[key] = value, acc), {});
+            .map(([key, v]) => [key, objectRender(context, v, filters, maxDepth)])
+            .reduce((acc, [key, v]) => (acc[key] = v, acc), {});
     }
     return value;
 }

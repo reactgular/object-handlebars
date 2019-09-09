@@ -27,6 +27,56 @@ describe('handlebars', () => {
         });
     });
 
+    describe('unhandled data types', () => {
+        it('should render a function', () => {
+            const x = {name: () => 'John Smith'};
+            expect(handlebars('{{name}}', x)).toEqual('[function]');
+        });
+
+        it('should render undefined', () => {
+            const x = {name: undefined};
+            expect(handlebars('{{name}}', x)).toEqual('undefined');
+            expect(handlebars('{{fooBar}}', x)).toEqual('undefined');
+            expect(handlebars('{{a.b.c}}', x)).toEqual('undefined');
+            expect(handlebars('{{name.missing}}', x)).toEqual('undefined');
+        });
+
+        it('should render null', () => {
+            const x = {name: null};
+            expect(handlebars('{{name}}', x)).toEqual('null');
+        });
+
+        it('should render an object', () => {
+            const x = {name: {}};
+            expect(handlebars('{{name}}', x)).toEqual('[object]');
+        });
+
+        it('should render an array', () => {
+            const x = {name: []};
+            expect(handlebars('{{name}}', x)).toEqual('[array]');
+        });
+    });
+
+    describe('dot notation', () => {
+        it('should read from object path', () => {
+            const x = {a: {b: {c: 'Hello World'}}};
+            expect(handlebars('{{a.b.c}}', x)).toEqual('Hello World');
+        });
+
+        it('should ignore invalid paths', () => {
+            expect(handlebars('{{a.b.c}}', {})).toEqual('undefined');
+            expect(handlebars('{{a.b.c}}', {a: null})).toEqual('undefined');
+            expect(handlebars('{{a.b.c}}', {a: []})).toEqual('undefined');
+            expect(handlebars('{{a.b.c}}', {a: 'test'})).toEqual('undefined');
+            expect(handlebars('{{a.b.c}}', {a: {}})).toEqual('undefined');
+        });
+
+        it('should ignore array notation', () => {
+            const x = {a: [1, 2, 3]};
+            expect(handlebars('{{a[0]}}', x)).toEqual('undefined');
+        });
+    });
+
     describe('filtering', () => {
         it('should call filter function', () => {
             const upper = (s: string) => s.toUpperCase();
