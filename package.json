@@ -1,0 +1,51 @@
+{
+    "name": "@reactgular/object-handlebars",
+    "version": "1.0.0",
+    "description": "Minimal templating with {handlebars} in a JavaScript object.",
+    "author": "reactgular.com",
+    "homepage": "https://github.com/reactgular/object-handlebars.git",
+    "license": "MIT",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/reactgular/object-handlebars.git"
+    },
+    "bugs": {
+        "url": "https://github.com/reactgular/object-handlebars/issues"
+    },
+    "keywords": [
+        "javascript",
+        "typescript",
+        "library",
+        "templates",
+        "handlebars",
+        "mustache",
+        "object",
+        "properties"
+    ],
+    "scripts": {
+        "test": "jest",
+        "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+        "build": "rm -fr ./lib && tsc",
+        "lint": "tslint -p tsconfig.json",
+        "prepublishOnly": "npm test && npm run lint",
+        "preversion": "npm run lint"
+    },
+    "devDependencies": {
+        "@types/dot-prop": "^5.0.1",
+        "@types/jest": "^24.0.18",
+        "@types/node": "^12.7.4",
+        "coveralls": "^3.0.6",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.0.2",
+        "tslint": "^5.19.0",
+        "typescript": "~3.6.2"
+    },
+    "files": [
+        "lib/**/*"
+    ],
+    "dependencies": {
+        "dot-prop": "^5.1.0"
+    }
+}
